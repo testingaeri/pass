@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Guesser</title>
+    <style>
+        /* Existing CSS styles */
+        /* Add styles for the login and registration forms */
+        .form-container {
+            display: none; /* Hide by default */
+            margin-top: 20px;
+        }
+        .form-container.active {
+            display: block; /* Show when active */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Password Guesser</h1>
+
+        <!-- Login Form -->
+        <div id="login-form" class="form-container">
+            <h2>Login</h2>
+            <input type="email" id="login-email" placeholder="Email" required />
+            <input type="password" id="login-password" placeholder="Password" required />
+            <button onclick="login()">Login</button>
+            <div class="output" id="login-output"></div>
+            <button onclick="toggleForms()">Create an account</button>
+        </div>
+
+        <!-- Registration Form -->
+        <div id="registration-form" class="form-container">
+            <h2>Create Account</h2>
+            <input type="email" id="register-email" placeholder="Email" required />
+            <input type="password" id="register-password" placeholder="Password" required />
+            <button onclick="register()">Create Account</button>
+            <div class="output" id="register-output"></div>
+            <button onclick="toggleForms()">Back to Login</button>
+        </div>
+
+        <!-- Password Guessing Section (remains unchanged) -->
+        <div id="password-section">
+            <label for="passwordInput">Enter your password guess:</label><br>
+            <input type="text" id="passwordInput" placeholder="Enter your guess here" />
+            <div>
+                <button onclick="checkPassword()">Guess Password</button>
+                <button onclick="resetInput()">Reset</button>
+            </div>
+            <div id="output" class="output"></div>
+        </div>
+
+        <label for="youtube-link">Enter YouTube link:</label><br>
+        <input type="text" id="youtube-link" placeholder="YouTube link here" />
+        <button onclick="playMusic()">Play Music</button>
+
+        <button class="menu-toggle" onclick="toggleSettings()">Settings</button>
+        <div class="settings-menu" id="settings-menu">
+            <label for="color-picker">Choose Background Color:</label><br>
+            <input type="color" id="color-picker" onchange="changeBackground()" />
+        </div>
+    </div>
+
+    <script>
+        // Existing JavaScript code remains unchanged
+
+        function toggleForms() {
+            const loginForm = document.getElementById('login-form');
+            const registrationForm = document.getElementById('registration-form');
+            loginForm.classList.toggle('active');
+            registrationForm.classList.toggle('active');
+        }
+
+        async function register() {
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+
+            // Call your backend API for registration
+            const response = await fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await response.json();
+            document.getElementById('register-output').innerText = data.message;
+        }
+
+        async function login() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            // Call your backend API for login
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await response.json();
+            document.getElementById('login-output').innerText = data.message;
+        }
+    </script>
+</body>
+</html>
+
